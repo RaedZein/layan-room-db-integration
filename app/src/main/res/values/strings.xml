@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">PreferenceStorage</string>
+    <string name="empty_not_saved">empty_not_saved</string>
+</resources>
