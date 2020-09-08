@@ -8,6 +8,11 @@ import android.os.Bundle
 import androidx.room.Room
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.android.synthetic.main.registration.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
    lateinit var sharedPreferences: SharedPreferences
@@ -43,12 +48,13 @@ class MainActivity : AppCompatActivity() {
         } else {
             setContentView(R.layout.registration)
             Login.setOnClickListener {
-                val thread = Thread {
+                val thread = CoroutineScope(this).launch(Dispatchers.Default) {
                     val userEntity = User(
                         FirstName.text.toString(),
                         LastName.text.toString(),
                         Email.text.toString(),
-                        DateOfBirth.text.toString()
+                        getDate(),
+                        AdminData(2,"Blablbal")
                     )
                     db.userDao().insert(userEntity)
                     sharedPreferences.edit().putString("logged", "logged").apply()
@@ -83,9 +89,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-
-
-
+    private fun getDate(): Date  = SimpleDateFormat("dd MMM yyyy").parse(DateOfBirth.text.toString())
 
 }
